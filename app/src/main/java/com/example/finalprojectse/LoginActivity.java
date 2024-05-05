@@ -34,7 +34,8 @@ public class LoginActivity extends AppCompatActivity {
                 // startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 String username = edUsername.getText().toString();
                 String password = edPassword.getText().toString();
-                Database db = new Database(getApplicationContext(),"healthcare",null,1);
+                Database db = new Database(getApplicationContext());
+
                 if(username.length()==0 || password.length()==0){
                     Toast.makeText(getApplicationContext(),"Please fill All details",Toast.LENGTH_SHORT).show();
                 }else{
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
                         startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                     }else{
-                        Toast.makeText(getApplicationContext(),"Invalid Username and Password",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Wrong Username or Password",Toast.LENGTH_SHORT).show();
                     }
 
                 }

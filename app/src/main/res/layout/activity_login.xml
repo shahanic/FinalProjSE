@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@color/colorRed"
+    android:background="@color/colorRedCross"
 >/
 <EditText
 android:id="@+id/editTextLoginPassword"
@@ -14,7 +14,7 @@ android:layout_width="330dp"
 android:layout_height="43dp"
 android:layout_marginTop="32dp"
 android:background="@drawable/input_bg"
-android:drawableLeft="@drawable/ic_baseline_security_24"
+android:drawableLeft="@drawable/baseline_security_24"
 android:drawablePadding="10dp"
 android:ems="10"
 android:hint="Password"
@@ -30,21 +30,21 @@ app:layout_constraintHorizontal_bias="0.604"
 app:layout_constraintStart_toStartOf="parent"
 app:layout_constraintTop_toBottomOf="@+id/editTextLoginUsername" />
 
-<TextView
-android:id="@+id/textViewBMTitle"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Resconnect"
-android:textColor="@color/purple_200"
-android:textSize="34sp"
-android:textStyle="bold"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintVertical_bias="0.104" />
+    <TextView
+        android:id="@+id/textViewBMTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resconnect"
+        android:textColor="@color/colorWhite"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.202" />
 
-<TextView
+    <TextView
 android:id="@+id/textViewAppTitle"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@ app:layout_constraintEnd_toEndOf="parent"
 app:layout_constraintHorizontal_bias="0.527"
 app:layout_constraintStart_toStartOf="parent"
 app:layout_constraintTop_toBottomOf="@+id/textViewBMTitle"
-app:layout_constraintVertical_bias="0.247" />
+app:layout_constraintVertical_bias="0.147" />
 
 <EditText
 android:id="@+id/editTextLoginUsername"
@@ -65,7 +65,7 @@ android:layout_width="330dp"
 android:layout_height="43dp"
 android:layout_marginTop="48dp"
 android:background="@drawable/input_bg"
-android:drawableLeft="@drawable/ic_baseline_person_24"
+android:drawableLeft="@drawable/baseline_person_24"
 android:drawablePadding="10dp"
 android:ems="10"
 android:hint="Username"
@@ -84,10 +84,11 @@ app:layout_constraintTop_toBottomOf="@+id/textViewAppTitle" />
 <Button
 android:id="@+id/buttonLogin"
 android:layout_width="323dp"
-android:layout_height="41dp"
+android:layout_height="45dp"
 android:layout_marginTop="32dp"
 android:background="@drawable/btn_bg"
 android:text="Login"
+
 app:layout_constraintEnd_toEndOf="parent"
 app:layout_constraintHorizontal_bias="0.556"
 app:layout_constraintStart_toStartOf="parent"
@@ -98,8 +99,8 @@ android:id="@+id/textViewNewUser"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:layout_marginTop="32dp"
-android:text="Register for New User"
-android:textColor="@color/colorWhite"
+android:text="New here? Register"
+android:textColor="@color/colorBlack"
 app:layout_constraintEnd_toEndOf="parent"
 app:layout_constraintHorizontal_bias="0.498"
 app:layout_constraintStart_toStartOf="parent"
