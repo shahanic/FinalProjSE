@@ -58,29 +58,26 @@ public class ProfileActivity extends AppCompatActivity {
         profileImageView.setImageResource(R.drawable.baseline_person_24);
 
 
-    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-        public boolean onNavigationItemSelected (MenuItem item){
-            if (item.getItemId() == R.id.navigation_profile) {
-                // Start ProfileActivity when Profile item is clicked
+            public boolean onNavigationItemSelected (MenuItem item){
+                if (item.getItemId() == R.id.navigation_profile) {
+                    // Start ProfileActivity when Profile item is clicked
 
-                return true;
+                    return true;
 
-            } else if (item.getItemId() == R.id.navigation_home) {
-                startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
-                // Handle Home item click
-                return true;
-            } else if (item.getItemId() == R.id.navigation_contacts) {
-                startActivity(new Intent(ProfileActivity.this, ContactsActivity.class));
-                // Handle Settings item click
-                return true;
+                } else if (item.getItemId() == R.id.navigation_home) {
+                    startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
+                    // Handle Home item click
+                    return true;
+                } else if (item.getItemId() == R.id.navigation_contacts) {
+                    startActivity(new Intent(ProfileActivity.this, ContactsActivity.class));
+                    // Handle Settings item click
+                    return true;
+                }
+                // Add conditions for other BottomNavigationView items if needed
+                return false;
             }
-            // Add conditions for other BottomNavigationView items if needed
-            return false;
-        }
-    });
+        });
     }
-    }
-
-
-
+}
