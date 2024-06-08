@@ -1,0 +1,122 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/color"
+    tools:context=".HomeActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/material_dynamic_neutral_variant99"
+        android:padding="16dp">
+
+        <!-- Emergency Type Dropdown -->
+        <TextView
+            android:id="@+id/emergencyTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Select Emergency Type"
+            android:textColor="@color/colorRedCross"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/emergencyTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_below="@id/emergencyTypeText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/spinner_background"
+            android:padding="8dp"
+            android:popupBackground="@android:color/black"
+            android:spinnerMode="dropdown" />
+
+        <!-- GPS LOCATION -->
+        <TextView
+            android:id="@+id/titleTextGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emergencyTypeSpinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="GPS LOCATION"
+            android:textColor="@color/colorRedCross"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- New Update Location Button -->
+        <Button
+            android:id="@+id/updateLocationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleTextGPS"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button"
+            android:padding="12dp"
+            android:text="Update Location"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:onClick="updateLocation" />
+
+        <View
+            android:id="@+id/separator1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/updateLocationButton"
+            android:layout_marginVertical="20dp"
+            android:background="@color/colorBlack" />
+
+        <!-- Address -->
+        <TextView
+            android:id="@+id/addressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/separator1"
+            android:layout_centerHorizontal="true"
+            android:text="Address"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/addressValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addressText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="Address will be displayed here"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+        <!-- Formatted Message -->
+        <TextView
+            android:id="@+id/formattedMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addressValue"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Formatted message will be displayed here"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/sendSmsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/formattedMessage"
+            android:background="@drawable/button_background"
+            android:layout_marginBottom="-190dp"
+            android:layout_centerHorizontal="true"
+            android:text="Send SMS" />
+
+    </RelativeLayout>
+</ScrollView>

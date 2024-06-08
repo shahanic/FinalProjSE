@@ -1,86 +1,96 @@
 package com.example.finalprojectse;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    TextView tvGreeting, tvUsername, tvEmail;
+    Button btnLogout;
+    Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Dummy data (replace with actual data from database)
-        String username = "JohnDoe";
-        String email = "johndoe@example.com";
-        String address = "123 Main St, City, Country";
-        String maritalStatus = "Single";
-        int age = 30;
-        String birthday = "January 1, 1990";
-        String allergies = "Peanuts, Shellfish";
+        tvGreeting = findViewById(R.id.textViewGreeting);
+        tvUsername = findViewById(R.id.textViewUsername);
+        tvEmail = findViewById(R.id.textViewEmail);
+        btnLogout = findViewById(R.id.buttonLogout);
+        db = new Database(this);
 
-        // Set user details
-        TextView usernameTextView = findViewById(R.id.usernameTextView);
-        usernameTextView.setText(username);
-
-        TextView emailTextView = findViewById(R.id.emailTextView);
-        emailTextView.setText(email);
-
-        TextView addressTextView = findViewById(R.id.addressTextView);
-        addressTextView.setText(address);
-
-        TextView maritalStatusTextView = findViewById(R.id.maritalStatusTextView);
-        maritalStatusTextView.setText(maritalStatus);
-
-        TextView ageTextView = findViewById(R.id.ageTextView);
-        ageTextView.setText(String.valueOf(age));
-
-        TextView birthdayTextView = findViewById(R.id.birthdayTextView);
-        birthdayTextView.setText(birthday);
-
-        TextView allergiesTextView = findViewById(R.id.allergiesTextView);
-        allergiesTextView.setText(allergies);
-
-        // Set profile picture (dummy image)
-        ImageView profileImageView = findViewById(R.id.profileImageView);
-        profileImageView.setImageResource(R.drawable.baseline_person_24);
+        SharedPreferences sharedpreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username","");
 
 
-    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-        public boolean onNavigationItemSelected (MenuItem item){
-            if (item.getItemId() == R.id.navigation_profile) {
-                // Start ProfileActivity when Profile item is clicked
+        tvGreeting.setText("Hello, " + username);
 
-                return true;
-
-            } else if (item.getItemId() == R.id.navigation_home) {
-                startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
-                // Handle Home item click
-                return true;
-            } else if (item.getItemId() == R.id.navigation_contacts) {
-                startActivity(new Intent(ProfileActivity.this, ContactsActivity.class));
-                // Handle Settings item click
-                return true;
+        if (username != null && !username.isEmpty()) {
+            Cursor cursor = db.getUserInfo(username);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    String dbEmail = cursor.getString(cursor.getColumnIndex("email"));
+                    tvUsername.setText("Username: " + username);
+                    tvEmail.setText("Email: " + dbEmail);
+                } else {
+                    tvUsername.setText("Username: not found");
+                    tvEmail.setText("Email: not found");
+                }
+                cursor.close();
+            } else {
+                tvUsername.setText("Username: error");
+                tvEmail.setText("Email: error");
             }
-            // Add conditions for other BottomNavigationView items if needed
-            return false;
         }
-    });
+
+        // Logout button functionality
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.apply();
+                Toast.makeText(ProfileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_profile) {
+                    // Stay on ProfileActivity when Profile item is clicked
+                    return true;
+                } else if (itemId == R.id.navigation_home) {
+                    startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
+                    return true;
+                } else if (itemId == R.id.navigation_contacts) {
+                    startActivity(new Intent(ProfileActivity.this, ContactsActivity.class));
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // Set the selected item in the BottomNavigationView
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
     }
-    }
-
-
-
+}

@@ -1,6 +1,5 @@
 package com.example.finalprojectse;
 
-import static com.example.finalprojectse.R.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -12,9 +11,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Button;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeActivity extends AppCompatActivity {
 
 
@@ -23,6 +25,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Initialize FirebaseAuth instance
+
+        // Find the buttons
+
         // Find the buttons
         Button emergencyButton = findViewById(R.id.emergencyButton);
         Button button1 = findViewById(R.id.button1);
@@ -30,13 +36,17 @@ public class HomeActivity extends AppCompatActivity {
         Button button3 = findViewById(R.id.button3);
         Button button4 = findViewById(R.id.button4);
 
+
+        emergencyButton.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, EmergencyActivity.class)));
         // Set click listeners
         emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle emergency button click
+                startActivity(new Intent(HomeActivity.this, EmergencyActivity.class));
             }
         });
+
+
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,29 +75,25 @@ public class HomeActivity extends AppCompatActivity {
                 // Handle button 4 click
             }
         });
-
-
         // Setup bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // Add this line to get the username from SharedPreferences or another appropriate source
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.navigation_home) {
-                    // Handle Home item click
                     return true;
                 } else if (item.getItemId() == R.id.navigation_profile) {
-                    // Start ProfileActivity when Profile item is clicked
+
                     startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                     return true;
-                } else if (item.getItemId() == id.navigation_contacts) {
+                } else if (item.getItemId() == R.id.navigation_contacts) {
                     startActivity(new Intent(HomeActivity.this, ContactsActivity.class));
-                    // Handle Settings item click
                     return true;
                 }
-                // Add conditions for other BottomNavigationView items if needed
                 return false;
             }
         });
+
     }
 }
-

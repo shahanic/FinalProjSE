@@ -5,39 +5,32 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 public class Database extends SQLiteOpenHelper {
+
+    public static final String TABLE_NAME = "Contacts";
+    public static final String COL_1 = "ID";
+    public static final String COL_2 = "NAME";
+    public static final String COL_3 = "CONTACT_NO";
     public Database(@Nullable Context context) {
         super(context, "user_database", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String qry1 = "create table users(username text,email text,password text)";
+
+        String qry1 = "CREATE TABLE users(username TEXT, email TEXT, password TEXT, name TEXT)";
         sqLiteDatabase.execSQL(qry1);
 
-        String qry2 = "create table cart(username text,product text,price float,otype text)";
-        sqLiteDatabase.execSQL(qry2);
 
-        String qry3 = "create table orderplace(username text,fullname text,address text,contactno text,pincode int,date text,time text,amount float,otype text)";
-        sqLiteDatabase.execSQL(qry3);
-
-        // Create profile table
-        String qry4 = "create table profile(username text,fullname text,address text,marital_status text,age int,birthday text,allergies text,image blob)";
-        sqLiteDatabase.execSQL(qry4);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        // Drop tables if they exist
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS users");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS cart");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS orderplace");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS profile");
         onCreate(sqLiteDatabase);
     }
 
@@ -53,11 +46,8 @@ public class Database extends SQLiteOpenHelper {
 
     public int login(String username, String password) {
         int result = 0;
-        String str[] = new String[2];
-        str[0] = username;
-        str[1] = password;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("select * from users where username=? and password=?", str);
+        Cursor c = db.rawQuery("SELECT * FROM users WHERE username=? AND password=?", new String[]{username, password});
         if (c.moveToFirst()) {
             result = 1;
         }
@@ -66,58 +56,84 @@ public class Database extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addUserProfile(String username, String fullname, String address, String maritalStatus,
-                               int age, String birthday, String allergies, byte[] image) {
-        ContentValues cv = new ContentValues();
-        cv.put("username", username);
-        cv.put("fullname", fullname);
-        cv.put("address", address);
-        cv.put("marital_status", maritalStatus);
-        cv.put("age", age);
-        cv.put("birthday", birthday);
-        cv.put("allergies", allergies);
-        cv.put("image", image);
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert("profile", null, cv);
-        db.close();
+    public Cursor getUserInfo(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query("users", new String[]{"username", "email"}, "username=?", new String[]{username}, null, null, null);
     }
 
-    public Profile getUserProfile(String username) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM profile WHERE username=?", new String[]{username});
-        if (cursor != null && cursor.moveToFirst()) {
-            String fullname = cursor.getString(cursor.getColumnIndex("fullname"));
-            String address = cursor.getString(cursor.getColumnIndex("address"));
-            String maritalStatus = cursor.getString(cursor.getColumnIndex("marital_status"));
-            int age = cursor.getInt(cursor.getColumnIndex("age"));
-            String birthday = cursor.getString(cursor.getColumnIndex("birthday"));
-            String allergies = cursor.getString(cursor.getColumnIndex("allergies"));
-            byte[] image = null;
-            int imageIndex = cursor.getColumnIndex("image");
-            if (imageIndex >= 0) {
-                image = cursor.getBlob(imageIndex);
-            } else {
-                // Handle the case where the column index is not found
-                // For example, you can log an error message or take appropriate action
-                Log.e("Database", "Column 'image' not found in the profile table");
-            }
-        }
 
-        return null;
-    }
-    public boolean updateUserProfile(String oldUsername, String newUsername, String newEmail, String newAddress) {
+    //to add new contact
+    public boolean insertData(String name, String num) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("username", newUsername);
-        values.put("email", newEmail);
-        values.put("address", newAddress);
-        // Update other profile attributes as needed
-
-        // Updating row
-        int rowsAffected = db.update("profile", values, "username = ?", new String[]{oldUsername});
-        db.close();
-
-        // Return true if the update was successful (at least one row affected)
-        return rowsAffected > 0;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_2, name);
+        contentValues.put(COL_3, num);
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        return result != -1;
     }
+
+    //to get all contacts
+    public Cursor getAllContacts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " ASC", null);
+    }
+
+    //to delete selected contact
+    public boolean deleteContact(String phoneNumber) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String deleteQuery = "DELETE FROM " + TABLE_NAME + " WHERE " + COL_3 + " = " + phoneNumber;
+        Cursor cursor = db.rawQuery(deleteQuery, null);
+
+        if (cursor.moveToFirst()) {
+            db.close();
+            cursor.close();
+            return true;
+        } else {
+            db.close();
+            cursor.close();
+            return false;
+        }
+    }
+
+    //search functionality
+    public Cursor searchContacts(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL_2 + " LIKE ?" + " ORDER BY " + COL_2 + " ASC", new String[]{"%" + keyword + "%"});
+        return cursor;
+    }
+
+    //to update the contact
+    public void updateContact(String oldPhoneNumber, String name, String newPhoneNumber) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_2, name);
+        values.put(COL_3, newPhoneNumber);
+
+        db.update(TABLE_NAME, values, COL_3 + " = ?",
+                new String[]{oldPhoneNumber});
+        db.close();
+    }
+
+    //get the contact from the database
+    public int getContact(String phoneNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL_3 + " = " + phoneNo, null);
+        int noOfContacts = cursor.getCount();
+        cursor.close();
+        return noOfContacts;
+    }
+
+    //get the name from the database
+    public int getName(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL_2 + " = '" + name + "'", null);
+        int noOfContacts = cursor.getCount();
+        cursor.close();
+        return noOfContacts;
+    }
+
 }

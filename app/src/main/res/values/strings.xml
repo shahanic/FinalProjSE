@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">finalprojectSE</string>
+    <string name="pause">Pause Location Updates</string>
+    <string name="resume">Resume Location Updates</string>
+    <string-array name="emergency_types_array">
+        <item>Driving Accident</item>
+        <item>Heart Attack</item>
+        <item>Stroke</item>
+        <item>Seizure</item>
+        <item>Severe Bleeding</item>
+        <item>Unconsciousness</item>
+        <item>Severe Allergic Reaction</item>
+        <item>Drowning</item>
+        <item>Poisoning</item>
+        <item>Choking</item> </string-array>
+
+
+        <string name="about_text">
+        Welcome to SafeStay, the app dedicated to keeping you secure, anytime and anywhere. Developed with your safety in mind, SafeStay harnesses the power of GPS technology to ensure that help is always just a click away. In any emergency, SafeStay facilitates immediate communication by sending your precise location to your designated contacts, ensuring timely assistance.\n\nOur Team:\n- Shahani A. Callueng - Lead Developer\n- Valerie Joy P. Calabitin - UI/UX Designer\n- Eliza Kyla D. Lafradez - Project Manager\n\nAt SafeStay, we believe in a world where technology empowers individuals to protect themselves and their loved ones effortlessly. Thank you for choosing SafeStay—where your safety is our priority.
+    </string>
+
 </resources>

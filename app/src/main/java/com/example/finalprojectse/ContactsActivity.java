@@ -1,6 +1,7 @@
 package com.example.finalprojectse;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -62,6 +63,7 @@ public class ContactsActivity extends AppCompatActivity {
         });
 
     }
+    @SuppressLint("Range")
     private void loadContacts() {
         ArrayList<Contact> contacts = new ArrayList<>();
         ContentResolver contentResolver = getContentResolver();
@@ -69,8 +71,8 @@ public class ContactsActivity extends AppCompatActivity {
 
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String phone = "";
 
                 Cursor phoneCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
